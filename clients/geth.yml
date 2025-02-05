@@ -1,5 +1,5 @@
 services:
-  geth:
+  node:
     image: ethereum/client-go:latest
 
     environment:
