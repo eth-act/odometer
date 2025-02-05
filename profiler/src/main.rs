@@ -33,7 +33,7 @@ async fn main() {
             dc.up().unwrap();
 
             // TODO: Add a health check instead of a manual delay.
-            tokio::time::sleep(std::time::Duration::from_secs(4)).await;
+            tokio::time::sleep(std::time::Duration::from_secs(8)).await;
 
             let summary = benchmark_engine_api_request(&bench_input).await;
 

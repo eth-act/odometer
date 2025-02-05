@@ -9,7 +9,7 @@ services:
               --genesis-file=/config/genesis.json \
               --rpc-http-enabled=true \
               --rpc-http-host=0.0.0.0 \
-              --engine-jwt-secret=8551 \
+              --engine-rpc-port=8551 \
               --engine-host-allowlist="*" \
               --engine-jwt-secret=/config/jwt.hex
 

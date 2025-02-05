@@ -15,7 +15,8 @@
     "terminalTotalDifficulty": 0,
     "terminalTotalDifficultyPassed": true,
     "shanghaiTime": 0,
-    "cancunTime": 0
+    "cancunTime": 0,
+    "ethash": {}
   },
   "alloc": {
     "0x0000000000000000000000000000000000000000": {
