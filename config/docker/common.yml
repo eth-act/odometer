@@ -9,3 +9,4 @@ services:
       - ./entrypoint.sh:/entrypoint.sh
       - ../jwt.hex:/config/jwt.hex
       - ../genesis.json:/config/genesis.json
+      - ../chainspec.json:/config/chainspec.json
