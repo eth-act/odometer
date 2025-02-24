@@ -1,6 +1,9 @@
+use reqwest::Client;
 use std::path::Path;
 use std::process::{exit, Command, Output};
+use std::time::{Duration, Instant};
 use thiserror::Error;
+use tokio::time::sleep;
 
 #[derive(Error, Debug)]
 pub enum DockerError {
@@ -8,6 +11,8 @@ pub enum DockerError {
     CommandFailed(String),
     #[error("Failed to execute docker command: {0}")]
     ExecutionFailed(#[from] std::io::Error),
+    #[error("Health check timeout")]
+    HealthCheckTimeout,
 }
 
 pub struct DockerCompose {
@@ -68,5 +73,20 @@ impl DockerCompose {
     pub fn down(&self) -> Result<(), DockerError> {
         self.run_command(&["-p", &self.get_project_name(), "down", "--volumes"])?;
         Ok(())
+    }
+
+    pub async fn wait_for_healthy(&self, timeout_secs: u64) -> Result<(), DockerError> {
+        let client = Client::new();
+        let start = Instant::now();
+        let timeout = Duration::from_secs(timeout_secs);
+
+        while start.elapsed() < timeout {
+            match client.get("http://localhost:8551").send().await {
+                Ok(_) => return Ok(()),
+                Err(_) => sleep(Duration::from_millis(500)).await,
+            }
+        }
+
+        Err(DockerError::HealthCheckTimeout)
     }
 }
