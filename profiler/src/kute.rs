@@ -6,10 +6,7 @@ use sha2::Sha256;
 use std::time::{SystemTime, UNIX_EPOCH};
 use thiserror::Error;
 
-use crate::{
-    bench_summary::BenchEngineAPIRequestSummary,
-    engine_api::{EngineApiRequest, EngineApiResponse, TimedEngineApiResponse},
-};
+use crate::engine_api::{EngineApiRequest, EngineApiResponse, TimedEngineApiResponse};
 
 type HmacSha256 = Hmac<Sha256>;
 
@@ -35,7 +32,6 @@ pub struct JwtClient {
 
 impl JwtClient {
     pub fn new(secret: Vec<u8>, rpc_url: String) -> Self {
-
         Self {
             client: Client::new(),
             secret,
@@ -73,7 +69,7 @@ impl JwtClient {
         let start = std::time::Instant::now();
         let response = self
             .client
-            .post(&self.rpc_url) 
+            .post(&self.rpc_url)
             .header("Content-Type", "application/json")
             .header("Authorization", format!("Bearer {}", jwt))
             .body(request_string)

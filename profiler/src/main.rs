@@ -23,37 +23,67 @@ async fn main() {
         header.push(client.cell().bold(true));
     }
 
-    for bench_input in bench_inputs.into_iter().progress() {
-        let mut column = Vec::new();
-        column.push(bench_input.name.clone().cell());
-        column.push(bench_input.description.clone().cell());
+    // Create a matrix to store results: [test_index][client_index]
+    let mut results = vec![vec![String::new(); get_clients().len()]; bench_inputs.len()];
 
-        for client in get_clients() {
-            let dc = docker::DockerCompose::new(&format!("{}.yml", client));
-            dc.up().unwrap();
+    let total_clients = get_clients().len();
 
-            // Wait for the client to be ready with a 30 second timeout
-            if let Err(e) = dc.wait_for_healthy(30).await {
-                eprintln!("Failed to start client {}: {}", client, e);
-                dc.down().unwrap();
-                continue;
-            }
+    // Outer loop over clients
+    for (client_idx, client) in get_clients().into_iter().enumerate() {
+        println!("\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+        println!(
+            "  Processing [{}/{}] {}",
+            client_idx + 1,
+            total_clients,
+            client
+        );
+        println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
+        println!("🐳 Starting docker container...");
+        let dc = docker::DockerCompose::new(&format!("{}.yml", client));
+        dc.up().unwrap();
+
+        println!("Waiting for client to be ready...");
+        // Wait for the client to be ready with a 30 second timeout
+        if let Err(e) = dc.wait_for_healthy(30).await {
+            eprintln!("Failed to start client {}: {}", client, e);
+            println!("Stopping docker container...");
+            dc.down().unwrap();
+            continue;
+        }
+        println!("Client is ready!");
+
+        // Inner loop over all benchmarks for this client
+        println!("Running benchmarks for {}...", client);
+        for (test_idx, bench_input) in bench_inputs.iter().enumerate().progress() {
             let summary = benchmark_engine_api_request(&bench_input).await;
 
-            // For each summary, we have a table column
+            // Store the result for this test and client
             for sum in summary {
                 let gas_used_u128 = parse_gas_used(&sum.gas_used);
                 let gas_per_second =
                     compute_gas_per_second(gas_used_u128, sum.time_taken_microseconds);
-
-                column.push(format_gas_rate(gas_per_second).cell());
+                results[test_idx][client_idx] = format_gas_rate(gas_per_second);
             }
-
-            dc.down().unwrap();
         }
 
-        rows.push(column);
+        println!("Stopping docker container for {}...", client);
+        dc.down().unwrap();
+    }
+
+    // Build the final table rows from the results matrix
+    for (idx, bench_input) in bench_inputs.iter().enumerate() {
+        let mut row = vec![
+            bench_input.name.clone().cell(),
+            bench_input.description.clone().cell(),
+        ];
+
+        // Add all client results for this test
+        for client_result in &results[idx] {
+            row.push(client_result.cell());
+        }
+
+        rows.push(row);
     }
 
     let table = rows.table().title(header).bold(true);

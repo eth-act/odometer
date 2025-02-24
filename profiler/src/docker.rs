@@ -35,21 +35,33 @@ impl DockerCompose {
 
         match output {
             Ok(output) => {
-                if !output.status.success() {
-                    let error_message = format!(
-                        "{} | stdout: {}",
-                        String::from_utf8_lossy(&output.stderr).trim(),
+                // Format docker output with emojis
+                if !output.stdout.is_empty() {
+                    println!(
+                        "🔵 Docker: {}",
                         String::from_utf8_lossy(&output.stdout).trim()
                     );
-                    // Print the error and exit
+                }
+                if !output.stderr.is_empty() {
+                    let stderr_str = String::from_utf8_lossy(&output.stderr);
+                    let stderr_trimmed = stderr_str.trim();
+                    if stderr_trimmed.contains("error") {
+                        eprintln!("❌ Docker Error: {}", stderr_trimmed);
+                    } else {
+                        println!("ℹ️  Docker: {}", stderr_trimmed);
+                    }
+                }
+
+                if !output.status.success() {
+                    let error_message =
+                        format!("❌ Docker command failed with status {}", output.status);
                     eprintln!("{}", error_message);
                     exit(1);
                 }
                 Ok(output)
             }
             Err(e) => {
-                let error_message = format!("Error executing docker command: {}", e);
-                // Print the error and exit
+                let error_message = format!("❌ Error executing docker command: {}", e);
                 eprintln!("{}", error_message);
                 exit(1);
             }
