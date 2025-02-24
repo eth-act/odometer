@@ -1,0 +1,24 @@
+services:
+  node:
+    image: nethermind/nethermind:latest
+
+    environment:
+      RUN_COMMAND: |
+        ./nethermind --config=holesky \
+                    --Init.ChainSpecPath=/config/chainspec.json \
+                    --data-dir=/data \
+                    --Sync.NetworkingEnabled=false \
+                    --JsonRpc.Enabled=true \
+                    --JsonRpc.Host=0.0.0.0 \
+                    --HealthChecks.Enabled=true \
+                    --JsonRpc.EngineHost=0.0.0.0 \
+                    --JsonRpc.EnginePort=8551 \
+                    --JsonRpc.JwtSecretFile=/config/jwt.hex\
+                    --Init.GenesisHash=0x9cbea0de83b440f4462c8280a4b0b4590cdb452069757e2c510cb3456b6c98cc \
+                    --Sync.MaxAttemptsToUpdatePivot=0 \
+                    --log=INFO
+
+    extends:
+      file: ../config/docker/common.yml
+      service: base_client
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]

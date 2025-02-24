@@ -1,5 +1,5 @@
 services:
-  erigon:
+  node:
     image: erigontech/erigon:latest
     # TODO: Remove root
     user: "root:root"

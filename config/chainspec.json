@@ -1,24 +1,78 @@
 {
-  "config": {
-    "chainId": 17000,
-    "homesteadBlock": 0,
-    "eip150Block": 0,
-    "eip155Block": 0,
-    "eip158Block": 0,
-    "byzantiumBlock": 0,
-    "constantinopleBlock": 0,
-    "petersburgBlock": 0,
-    "istanbulBlock": 0,
-    "berlinBlock": 0,
-    "londonBlock": 0,
-    "mergeNetsplitBlock": 0,
-    "terminalTotalDifficulty": 0,
-    "terminalTotalDifficultyPassed": true,
-    "shanghaiTime": 0,
-    "cancunTime": 0,
-    "ethash": {}
+  "name": "Holesky Testnet",
+  "dataDir": "holesky",
+  "engine": {
+    "Ethash": {}
   },
-  "alloc": {
+  "params": {
+    "accountStartNonce": "0x0",
+    "chainID": "0x4268",
+    "networkID": "0x4268",
+    "eip140Transition": "0x0",
+    "eip145Transition": "0x0",
+    "eip150Transition": "0x0",
+    "eip155Transition": "0x0",
+    "eip160Transition": "0x0",
+    "eip161abcTransition": "0x0",
+    "eip161dTransition": "0x0",
+    "eip211Transition": "0x0",
+    "eip214Transition": "0x0",
+    "eip658Transition": "0x0",
+    "eip1014Transition": "0x0",
+    "eip1052Transition": "0x0",
+    "eip1283Transition": "0x0",
+    "eip1283DisableTransition": "0x0",
+    "eip152Transition": "0x0",
+    "eip1108Transition": "0x0",
+    "eip1344Transition": "0x0",
+    "eip1884Transition": "0x0",
+    "eip2028Transition": "0x0",
+    "eip2200Transition": "0x0",
+    "eip2565Transition": "0x0",
+    "eip2929Transition": "0x0",
+    "eip2930Transition": "0x0",
+    "eip1559Transition": "0x0",
+    "eip3198Transition": "0x0",
+    "eip3529Transition": "0x0",
+    "eip3541Transition": "0x0",
+    "eip3651TransitionTimestamp": "0x0",
+    "eip3855TransitionTimestamp": "0x0",
+    "eip3860TransitionTimestamp": "0x0",
+    "eip4895TransitionTimestamp": "0x0",
+    "eip1153TransitionTimestamp": "0x0",
+    "eip4788TransitionTimestamp": "0x0",
+    "eip4844TransitionTimestamp": "0x0",
+    "eip5656TransitionTimestamp": "0x0",
+    "eip6780TransitionTimestamp": "0x0",
+    "terminalTotalDifficulty": "0x0",
+    "gasLimitBoundDivisor": "0x400",
+    "maxCodeSize": "0x6000",
+    "maxCodeSizeTransition": "0x0",
+    "maximumExtraDataSize": "0xffff",
+    "minGasLimit": "0x1388",
+    "registrar": "0x0000000000000000000000000000000000000000",
+    "MergeForkIdTransition": "0x0"
+  },
+  "genesis": {
+    "seal": {
+      "ethereum": {
+        "nonce": "0x1234",
+        "mixHash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    },
+    "difficulty": "0x01",
+    "baseFeePerGas": "0x7",
+    "author": "0x0000000000000000000000000000000000000000",
+    "extraData": "",
+    "gasLimit": "0x5D21DBA00",
+    "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
+    "timestamp": "0x65156994"
+  },
+  "nodes": [
+    "enode://ac906289e4b7f12df423d654c5a962b6ebe5b3a74cc9e06292a85221f9a64a6f1cfdd6b714ed6dacef51578f92b34c60ee91e9ede9c7f8fadc4d347326d95e2b@146.190.13.128:30303",
+    "enode://a3435a0155a3e837c02f5e7f5662a2f1fbc25b48e4dc232016e1c51b544cb5b4510ef633ea3278c0e970fa8ad8141e2d4d0f9f95456c537ff05fdf9b31c15072@178.128.136.233:30303"
+  ],
+  "accounts": {
     "0x0000000000000000000000000000000000000000": {
       "balance": "1"
     },
@@ -1004,14 +1058,5 @@
     "0x4BC656B34De23896fa6069C9862F355b740401aF": {
       "balance": "0x084595161401484a000000"
     }
-  },
-  "coinbase": "0x0000000000000000000000000000000000000000",
-  "difficulty": "0x01",
-  "baseFeePerGas": "0x7",
-  "extraData": "",
-  "gasLimit": "0x5d21dba00",
-  "nonce": "0x1234",
-  "mixhash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "parentHash": "0x0000000000000000000000000000000000000000000000000000000000000000",
-  "timestamp": "0x65156994"
+  }
 }

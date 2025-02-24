@@ -1,0 +1,19 @@
+services:
+  node:
+    image: hyperledger/besu:latest
+
+    environment:
+      RUN_COMMAND: |
+        besu  --discovery-enabled=false \
+              --data-path=/data \
+              --genesis-file=/config/genesis.json \
+              --rpc-http-enabled=true \
+              --rpc-http-host=0.0.0.0 \
+              --engine-rpc-port=8551 \
+              --engine-host-allowlist="*" \
+              --engine-jwt-secret=/config/jwt.hex
+
+    extends:
+      file: ../config/docker/common.yml
+      service: base_client
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]

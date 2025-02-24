@@ -1,5 +1,5 @@
 services:
-  reth:
+  node:
     # TODO: gchr.io would soon be deprecated
     # Read: https://cloud.google.com/artifact-registry/docs/transition/transition-from-gcr
     image: ghcr.io/paradigmxyz/reth:latest
