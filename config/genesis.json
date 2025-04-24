@@ -17,7 +17,6 @@
     "shanghaiTime": 0,
     "cancunTime": 0,
     "ethash": {},
-    "depositContractAddress": "0x4242424242424242424242424242424242424242",
     "blobSchedule": {
       "cancun": {
         "target": 3,
