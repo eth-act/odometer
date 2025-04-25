@@ -10,6 +10,9 @@
     A tool for benchmarking Ethereum clients.
 </p>
 
+> [!Warning]
+> This tool is under active development and the benchmarking methodology has not yet been thoroughly reviewed. Results should be interpreted with caution.
+
 ## Prerequisites
 
 Docker required.
