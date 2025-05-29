@@ -5,7 +5,7 @@
 Odometer follows these key design principles:
 
 - **Clear Hierarchy**: Commands follow odometer → verb → noun pattern
-- **Explicit Naming**: Self-explanatory verbs like measure, list, show, and nouns like gas, clients, payloads
+- **Explicit Naming**: Self-explanatory verbs like measure, list, show, and nouns like gas-limit, clients
 - **Required Arguments First**: Essential parameters come first
 - **Sensible Defaults**: Reasonable defaults for duration, tps, concurrency
 - **Output Flexibility**: Multiple output formats for different needs
@@ -37,7 +37,7 @@ odometer --debug            # Enable verbose debugging output
 The command structure follows the pattern: `odometer <verb> <noun> [options]`
 
 ```sh
-odometer measure gas        # Measure gas consumption
+odometer measure gas-limit  # Measure block gas limit
 odometer list clients       # List available clients
 odometer show results       # Display benchmark results
 ```
@@ -57,9 +57,8 @@ odometer debug     # Enables verbose debugging output
 #### A. Measure Benchmarks
 
 ```sh
-odometer measure gas [OPTIONS]
-  --against <client1,client2,...>    # Required: Clients to benchmark
-  --with <payload1,payload2,...>     # Required: Payloads to use
+odometer measure gas-limit [OPTIONS]
+  --for <client1,client2,...>        # Optional: Clients to benchmark (default: all)
   --duration <seconds> / -d          # Optional: Test duration (default: 60)
   --rate <tps> / -r                  # Optional: Target transactions per second
   --output <format> / -o             # Optional: Output format (table, json, csv)
@@ -71,14 +70,13 @@ odometer measure gas [OPTIONS]
 Example:
 
 ```sh
-odometer measure gas --against geth,erigon --with simple_tx --duration 120
+odometer measure gas-limit --for geth,erigon --duration 120
 ```
 
 #### B. List Available Resources
 
 ```sh
 odometer list clients [OPTIONS]          # List configured Ethereum clients
-odometer list payloads gas [OPTIONS]     # List available gas transaction payloads
 ```
 
 Options:
@@ -90,8 +88,8 @@ Options:
 #### C. Show Detailed Information
 
 ```sh
-odometer show results gas [run_id | --latest] [OPTIONS]   # Display gas benchmark results
-odometer show client <client_name>                        # Show client configuration
+odometer show results gas-limit [run_id | --latest] [OPTIONS]   # Display gas-limit benchmark results
+odometer show client <client_name>                              # Show client configuration
 ```
 
 Options:
@@ -105,7 +103,6 @@ Options:
 ```sh
 odometer configure client add <name> --rpc-url <url> [OPTIONS]    # Add client
 odometer configure client remove <name>                           # Remove client
-odometer configure payload add gas <name> --from-file <path>      # Add payload
 ```
 
 ## Future Extensibility
@@ -113,7 +110,7 @@ odometer configure payload add gas <name> --from-file <path>      # Add payload
 The command structure allows easy addition of new benchmark types:
 
 ```sh
-odometer measure zkevm --against geth --test-cases proof_generation_time
-odometer list payloads zkevm
+odometer measure zkevm --for geth --test-cases proof_generation_time
+odometer list clients zkevm
 odometer show results zkevm
 ```

@@ -1,7 +1,9 @@
 //! Command implementations for Odometer CLI
 
+pub mod measure;
 pub mod version;
 
+pub use measure::*;
 pub use version::*;
 
 use clap::Parser;
@@ -23,4 +25,8 @@ pub struct Cli {
 }
 
 #[derive(Debug, Parser)]
-pub enum Commands {}
+pub enum Commands {
+    /// Measure performance metrics
+    #[clap(subcommand)]
+    Measure(MeasureCommands),
+}

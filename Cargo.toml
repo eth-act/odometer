@@ -6,7 +6,7 @@ resolver = "2"
 
 # Shared metadata that all workspace members will inherit
 [workspace.package]
-version = "0.1.0"
+version = "0.1.0" # The project is under development, so use a placeholder version. Expect breaking changes.
 authors = ["Ethereum Applied Research Group"]
 repository = "https://github.com/eth-applied-research-group/odometer"
 license = "MIT OR Apache-2.0"
