@@ -30,29 +30,14 @@ Docker required.
 
   You can use `-c` as a shorter alternative to `--client`.
 
-## Project structure
+## Documentation
 
-```sh
-Cargo.toml                  # Workspace configuration
-📁 clients                  # Docker files for clients
-├── geth.yaml
-└── ...
-📁 config
-├── config.toml             # Project configuration
-├── genesis.json            # Genesis configuration
-├── jwt.hex                 # Jwt token
-└── 📁 docker               # Docker configurations
-    ├── common.yaml         # Base docker service
-    └── entrypoint.sh       # Docker entrypoint
-📁 profiler                 # Benchmarking logic
-├── Cargo.toml
-└── 📁 src
-    ├── bench_summary.rs    # Payload interface
-    ├── docker.rs           # Docker interface
-    ├── engine_api.rs       # Engine API interface
-    ├── kute.rs             # Client interface
-    └── main.rs             # Entrypoint
-```
+Detailed documentation about the project is available in the `docs/` directory:
+
+- [Architecture Overview](docs/architecture.md) - Overview of how the project is structured.
+- [Design Decisions](docs/design-philosophy.md) - Reasoning the CLI design
+- [Benchmarks](docs/benchmarks.md) - Available benchmarks
+- [Extending Odometer](docs/extending-odometer.md) - Guide for adding new tests and supporting additional Ethereum clients
 
 ## License
 
