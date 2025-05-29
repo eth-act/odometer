@@ -1,5 +1,5 @@
 [workspace]
-members = ["profiler"]
+members = ["crates/profiler"]
 resolver = "2"
 
-default-members = ["profiler"]
+default-members = ["crates/profiler"]
