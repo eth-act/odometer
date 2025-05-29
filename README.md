@@ -20,7 +20,15 @@ Docker required.
 ## Usage
 
 - Start up docker cli
-- Type `cargo run` to run the binary.
+- Run the binary using one of these commands:
+
+  ```sh
+  cargo run                    # Run tests for all clients
+  cargo run --client geth      # Run tests for geth only
+  cargo run --client reth      # Run tests for reth only
+  ```
+
+  You can use `-c` as a shorter alternative to `--client`.
 
 ## Project structure
 
