@@ -1,27 +1,10 @@
-mod bench_summary;
-mod docker;
-mod engine_api;
-mod kute;
-
-use bench_summary::{BenchEngineAPIRequestSummary, BenchInput};
-use clap::Parser;
+use crate::bench_summary::{BenchEngineAPIRequestSummary, BenchInput};
+use crate::kute::JwtClient;
 use cli_table::{print_stdout, Cell, Style, Table};
 use indicatif::ProgressIterator;
-use kute::JwtClient;
 use std::fs;
 
-#[derive(Parser)]
-#[command(author, version, about, long_about = None)]
-struct Args {
-    /// Optional client name to run tests for. If not provided, all clients will be tested.
-    #[arg(short, long)]
-    client: Option<String>,
-}
-
-#[tokio::main]
-async fn main() {
-    let args = Args::parse();
-
+pub async fn run() {
     // Parse Engine API requests that we want to benchmark
     let mut bench_inputs = read_gas_limit_files("tests/GasLimit").unwrap();
     // Sort the inputs by name, so they are printed in natural lexicographical order
@@ -31,16 +14,9 @@ async fn main() {
     let mut header = vec!["Name".cell().bold(true), "Description".cell().bold(true)];
 
     // Get all available clients, filtered by command line argument if provided
-    let clients: Vec<String> = get_clients()
-        .into_iter()
-        .filter(|client| args.client.as_ref().map_or(true, |target| target == client))
-        .collect();
+    let clients: Vec<String> = get_clients();
 
     if clients.is_empty() {
-        if let Some(client) = args.client {
-            eprintln!("Error: Client '{}' not found", client);
-            std::process::exit(1);
-        }
         eprintln!("Error: No clients found in clients directory");
         std::process::exit(1);
     }
@@ -67,7 +43,7 @@ async fn main() {
         println!("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
 
         println!("🐳 Starting docker container...");
-        let dc = docker::DockerCompose::new(&format!("{}.yml", client));
+        let dc = crate::docker::DockerCompose::new(&format!("{}.yml", client));
         dc.up().unwrap();
 
         println!("Waiting for client to be ready...");

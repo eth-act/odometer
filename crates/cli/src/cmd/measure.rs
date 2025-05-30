@@ -1,7 +1,7 @@
 //! Measure command implementation for benchmarking different metrics
 
-use clap::{Parser, ValueEnum};
-use std::fmt;
+use clap::Parser;
+use profiler::core::run;
 
 #[derive(Debug, Parser)]
 #[clap(about = "Measure performance metrics", disable_help_subcommand = true)]
@@ -23,5 +23,9 @@ pub struct GasLimitCmd {
 
 impl GasLimitCmd {
     /// Execute the gas limit measurement command
-    pub fn execute(&self) -> anyhow::Result<()> {}
+    pub async fn execute(&self) -> anyhow::Result<()> {
+        run().await;
+
+        Ok(())
+    }
 }

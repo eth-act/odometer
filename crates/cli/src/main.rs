@@ -2,7 +2,8 @@ use anyhow::Result;
 use clap::{CommandFactory, Parser};
 use odometer::cmd::{version::VersionArgs, Cli, Commands, MeasureCommands};
 
-fn main() -> Result<()> {
+#[tokio::main]
+async fn main() -> Result<()> {
     let cli = Cli::parse();
 
     if cli.version {
@@ -12,7 +13,7 @@ fn main() -> Result<()> {
     if let Some(cmd) = cli.cmd {
         match cmd {
             Commands::Measure(measure_cmd) => match measure_cmd {
-                MeasureCommands::GasLimit(gas_limit_cmd) => gas_limit_cmd.execute()?,
+                MeasureCommands::GasLimit(gas_limit_cmd) => gas_limit_cmd.execute().await?,
             },
         }
     } else {
