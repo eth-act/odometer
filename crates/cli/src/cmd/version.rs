@@ -9,7 +9,7 @@ impl VersionArgs {
     pub fn run(self) -> Result<(), anyhow::Error> {
         let name = env!("CARGO_PKG_NAME");
         let version = env!("CARGO_PKG_VERSION");
-        let description = env!("CARGO_PKG_DESCRIPTION",);
+        let description = env!("CARGO_PKG_DESCRIPTION");
 
         println!("{} v{}", name, version);
         println!("{}", description);
