@@ -22,9 +22,15 @@ pub struct GasLimitCmd {
 }
 
 impl GasLimitCmd {
-    /// Execute the gas limit measurement command
     pub async fn execute(&self) -> anyhow::Result<()> {
-        run().await;
+        // Use an empty slice if "all" is specified, otherwise use the clients vector
+        let clients_to_run = if self.clients.len() == 1 && self.clients[0] == "all" {
+            &[][..]
+        } else {
+            &self.clients
+        };
+
+        run(clients_to_run).await;
 
         Ok(())
     }

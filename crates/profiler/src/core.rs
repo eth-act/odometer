@@ -4,7 +4,7 @@ use cli_table::{print_stdout, Cell, Style, Table};
 use indicatif::ProgressIterator;
 use std::fs;
 
-pub async fn run() {
+pub async fn run(client_filter: &[String]) {
     // Parse Engine API requests that we want to benchmark
     let mut bench_inputs = read_gas_limit_files("tests/GasLimit").unwrap();
     // Sort the inputs by name, so they are printed in natural lexicographical order
@@ -14,7 +14,7 @@ pub async fn run() {
     let mut header = vec!["Name".cell().bold(true), "Description".cell().bold(true)];
 
     // Get all available clients, filtered by command line argument if provided
-    let clients: Vec<String> = get_clients();
+    let clients: Vec<String> = get_clients(client_filter);
 
     if clients.is_empty() {
         eprintln!("Error: No clients found in clients directory");
@@ -93,12 +93,14 @@ pub async fn run() {
     assert!(print_stdout(table).is_ok());
 }
 
-fn get_clients() -> Vec<String> {
+fn get_clients(client_filter: &[String]) -> Vec<String> {
     let client_files = fs::read_dir("clients").unwrap();
     let mut clients = Vec::new();
+
+    // Collect all available clients from directory
     for client_file in client_files
         .filter_map(Result::ok)
-        .filter(|client_file| client_file.path().extension().unwrap() == "yml")
+        .filter(|client_file| client_file.path().extension().unwrap_or_default() == "yml")
     {
         let client_name = client_file
             .file_name()
@@ -108,7 +110,17 @@ fn get_clients() -> Vec<String> {
             .to_string();
         clients.push(client_name);
     }
+
+    // If filter is empty, return all clients
+    if client_filter.is_empty() {
+        return clients;
+    }
+
+    // Otherwise, filter clients based on the provided list
     clients
+        .into_iter()
+        .filter(|client| client_filter.contains(client))
+        .collect()
 }
 
 fn read_gas_limit_files(path_to_dir: &str) -> Result<Vec<BenchInput>, Box<dyn std::error::Error>> {
