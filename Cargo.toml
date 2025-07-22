@@ -1,5 +1,20 @@
 [workspace]
-members = ["profiler"]
+members = [
+    "crates/cli",
+]
 resolver = "2"
 
-default-members = ["profiler"]
+# Shared metadata that all workspace members will inherit
+[workspace.package]
+version = "0.1.0" # The project is under development, so use a placeholder version. Expect breaking changes.
+authors = ["Ethereum Applied Research Group"]
+repository = "https://github.com/eth-applied-research-group/odometer"
+license = "MIT OR Apache-2.0"
+edition = "2021"
+description = "A tool for benchmarking Ethereum clients"
+
+# Shared dependencies with their versions
+[workspace.dependencies]
+clap = { version = "4.4.0", features = ["derive", "env", "wrap_help"] }
+thiserror = "1.0"
+anyhow = "1.0"

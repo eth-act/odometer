@@ -15,4 +15,3 @@ hex = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 cli-table = "0.4.9"
 indicatif = "0.17.9"
-clap = { version = "4.5.39", features = ["derive"] }
